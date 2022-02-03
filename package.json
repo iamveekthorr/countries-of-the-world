@@ -53,7 +53,7 @@
     "prettier": "^2.5.1"
   },
   "lint-staged": {
-    "src/*.{ts, tsx}": [
+    "*.{ts, tsx}": [
       "npm prettier:fix",
       "npm lint"
     ]
