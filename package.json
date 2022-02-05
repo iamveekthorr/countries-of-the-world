@@ -24,7 +24,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint --fix",
     "prettier:fix": "prettier . --write",
-    "prettier:check": "npx prettier --check",
+    "prettier:check": "prettier . --check",
     "prepare": "husky install"
   },
   "browserslist": {

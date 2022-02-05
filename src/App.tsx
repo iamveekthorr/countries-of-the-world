@@ -5,6 +5,10 @@ import type { IDarkTheme, ILightTheme } from './themes/theme';
 
 import { GlobalStyles } from './components/globalStyles';
 
+import { colors } from './lib/colors';
+
+import Header from './components/header/header.component';
+
 import './App.css';
 
 function App(): ReactElement {
@@ -13,29 +17,26 @@ function App(): ReactElement {
   const [theme, setTheme] = useState(defaultDark ? 'dark' : 'light');
 
   const darkTheme: IDarkTheme = {
-    body: '#000',
-    text: '#fff',
-    background: '#000',
+    body: colors.darkModeBG,
+    text: colors.darkModeText,
+    background: colors.darkModeElements,
   };
 
   const lightTheme: ILightTheme = {
-    body: '#fff',
-    text: '#000',
-    background: '#fff',
+    body: colors.lightModeBG,
+    text: colors.lightModeText,
+    background: colors.darkModeText,
   };
 
   const toggleTheme = (): void => {
-    theme === 'light' ? setTheme('dark') : setTheme('light');
+    theme === 'dark' ? setTheme('light') : setTheme('dark');
   };
+
   return (
-    <ThemeProvider theme={theme === 'light' ? darkTheme : lightTheme}>
+    <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <>
         <GlobalStyles />
-        <div> hello world</div>
-        <button onClick={toggleTheme} type="button">
-          testing toggling
-        </button>
-        <div>test</div>
+        <Header toggleTheme={toggleTheme} />
       </>
     </ThemeProvider>
   );
