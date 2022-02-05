@@ -35,6 +35,7 @@ function App(): ReactElement {
         <button onClick={toggleTheme} type="button">
           testing toggling
         </button>
+        <div>test</div>
       </>
     </ThemeProvider>
   );
