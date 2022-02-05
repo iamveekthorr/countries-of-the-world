@@ -23,7 +23,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --fix",
-    "prettier:fix": "npx prettier --write",
+    "prettier:fix": "prettier . --write",
     "prettier:check": "npx prettier --check",
     "prepare": "husky install"
   },
@@ -56,7 +56,7 @@
   },
   "lint-staged": {
     "*.{ts, tsx}": [
-      "npx prettier:fix",
+      "prettier:fix",
       "npm lint"
     ]
   }
