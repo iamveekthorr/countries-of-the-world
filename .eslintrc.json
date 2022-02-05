@@ -19,6 +19,10 @@
   },
   "plugins": ["react", "react-hooks", "@typescript-eslint"],
   "rules": {
+    "no-unused-expressions": [
+      "error",
+      { "allowShortCircuit": true, "allowTernary": true }
+    ],
     "arrow-body-style": ["error", "as-needed"],
     "react/jsx-one-expression-per-line": "off",
     "import/prefer-default-export": "off",
