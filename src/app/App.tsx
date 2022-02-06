@@ -1,15 +1,18 @@
 import { ReactElement, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
-import type { IDarkTheme, ILightTheme } from './themes/theme';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { GlobalStyles } from './components/globalStyles';
+import type { IDarkTheme, ILightTheme } from '../themes/theme';
 
-import { colors } from './lib/colors';
+import { GlobalStyles } from '../components/globalStyles';
 
-import Header from './components/header/header.component';
+import { colors } from '../lib/colors';
+
+import Header from '../components/header/header.component';
 
 import './App.css';
+import HomePage from '../components/home/homepage.component';
 
 function App(): ReactElement {
   const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -37,6 +40,12 @@ function App(): ReactElement {
       <>
         <GlobalStyles />
         <Header toggleTheme={toggleTheme} />
+
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+          </Routes>
+        </BrowserRouter>
       </>
     </ThemeProvider>
   );

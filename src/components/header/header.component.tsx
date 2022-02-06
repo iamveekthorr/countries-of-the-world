@@ -5,7 +5,6 @@ import {
   HeaderCaption,
   SwitcherContainer,
   Moon,
-  DarkModeText,
 } from './header.styles';
 
 interface IHeaderProps {
@@ -23,7 +22,6 @@ const Header: FC<IHeaderProps> = ({ toggleTheme }) => (
       }}
     >
       <Moon />
-      <DarkModeText>dark mode</DarkModeText>
     </SwitcherContainer>
   </HeaderContainer>
 );
