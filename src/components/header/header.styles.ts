@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { ReactComponent as MoonIcon } from '../../assets/moon.svg';
+import { ReactComponent as SunIcon } from '../../assets/sun.svg';
 
 export const HeaderContainer = styled.div`
   display: flex;
@@ -32,6 +33,12 @@ export const SwitcherContainer = styled.div`
 `;
 
 export const Moon = styled(MoonIcon)`
+  fill: ${(props) => props.theme.text};
+  height: 2rem;
+  width: 2rem;
+`;
+
+export const Sun = styled(SunIcon)`
   fill: ${(props) => props.theme.text};
   height: 2rem;
   width: 2rem;

@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, useCallback } from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -11,8 +11,9 @@ import { colors } from '../lib/colors';
 
 import Header from '../components/header/header.component';
 
-import './App.css';
 import HomePage from '../components/home/homepage.component';
+
+import './App.css';
 
 function App(): ReactElement {
   const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -31,15 +32,15 @@ function App(): ReactElement {
     background: colors.darkModeText,
   };
 
-  const toggleTheme = (): void => {
+  const toggleTheme = useCallback(() => {
     theme === 'dark' ? setTheme('light') : setTheme('dark');
-  };
+  }, [theme]);
 
   return (
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <>
         <GlobalStyles />
-        <Header toggleTheme={toggleTheme} />
+        <Header toggleTheme={toggleTheme} theme={theme} />
 
         <BrowserRouter>
           <Routes>

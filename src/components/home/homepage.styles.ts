@@ -7,16 +7,6 @@ export const HomePageBody = styled.main`
   }
 `;
 
-export const CountryCardList = styled.section`
-  display: grid;
-  align-items: center;
-  justify-content: center;
-
-  grid-template-columns: repeat(auto-fit, min(20rem, 1fr));
-  grid-column-gap: 3rem;
-  grid-row-gap: 3rem;
-`;
-
 export const SearchInputAndFilterContainer = styled.div`
   display: block;
 
