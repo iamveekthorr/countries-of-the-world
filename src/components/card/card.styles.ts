@@ -21,11 +21,29 @@ export const CardImageContainer = styled.div`
 `;
 
 export const CardDetailsContainer = styled.div`
-  padding: 2rem;
+  padding: 5rem 3rem;
 `;
 
 export const CountryName = styled.p`
   font-weight: 800;
   font-size: 1.8rem;
   color: ${(props) => props.theme.text};
+  margin-bottom: 1rem;
+`;
+
+export const CardDetails = styled.div`
+  & > *:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+`;
+
+export const CardDetail = styled.div`
+  display: flex;
+  font-size: 1.5rem;
+
+  & > span {
+    text-transform: capitalize;
+    margin-right: 1rem;
+    font-weight: 600;
+  }
 `;

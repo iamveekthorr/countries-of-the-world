@@ -6,6 +6,8 @@ import {
   CardImageContainer,
   CardDetailsContainer,
   CountryName,
+  CardDetails,
+  CardDetail,
 } from './card.styles';
 
 interface ICardProps {
@@ -34,9 +36,18 @@ const Card: FC<ICardProps> = ({
           ? `${countryName.slice(0, 18)}...`
           : countryName}
       </CountryName>
-      <div>population: {population}</div>
-      <div>region: {region}</div>
-      <div>capital: {capital}</div>
+      <CardDetails>
+        <CardDetail>
+          <span>population:</span> {population}
+        </CardDetail>
+        <CardDetail>
+          <span>region:</span> {region}
+        </CardDetail>
+        <CardDetail>
+          <span>capital:</span>
+          {capital}
+        </CardDetail>
+      </CardDetails>
     </CardDetailsContainer>
   </CardContainer>
 );

@@ -1,9 +1,10 @@
-import { FC, useCallback, useEffect, useState, useRef } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 
 import Card from '../card/card.component';
 import CardList from '../card-list/card-list.component';
+import Select from '../custom-select-options/custom-select.component';
 
 import Spinner from '../spinner/spinner.styles';
 
@@ -12,22 +13,13 @@ import {
   SearchInput,
   SearchInputAndFilterContainer,
   FormInputContainer,
-  CustomSelectContainer,
-  CustomSelect,
-  CustomSelectOptions,
-  CustomSelectOption,
 } from './homepage.styles';
 
 import { ReactComponent as SearchIcon } from '../../assets/search.svg';
-import { ReactComponent as ChevronDown } from '../../assets/chevron-down.svg';
 
 import { useCountries } from '../../hooks/useFetcher';
 
 const HomePage: FC = () => {
-  const [selectedOption, setSelectedOption] = useState<string>();
-
-  const [isOpen, setIsOpen] = useState(false);
-
   const options: string[] = [
     'filter by region',
     'africa',
@@ -43,47 +35,19 @@ const HomePage: FC = () => {
 
   const [country, setCountry] = useState<typeof countries>();
 
-  const toggling = (): void => setIsOpen((prev) => !prev);
-
-  const ref = useRef<HTMLDivElement>(null);
-
-  const closeCustomSelect = useCallback(
-    (event: Event): void => {
-      if (
-        ref.current &&
-        !ref.current.contains(event.target as Element) &&
-        isOpen
-      ) {
-        setIsOpen(false);
-      }
-    },
-    [isOpen]
-  );
-
   const handleChange = async (value: string) => {
     if (value !== 'filter by region') {
       const { data } = await axios.get<typeof countries>(
         `https://restcountries.com/v3.1/region/${value}`
       );
-      setCountry(data);
+      return setCountry(data);
     }
-  };
-
-  const onOptionClicked = (value: string): void => {
-    setIsOpen((prev) => !prev);
-    handleChange(value);
-    setSelectedOption(value);
+    return setCountry(countries);
   };
 
   useEffect(() => {
-    document.addEventListener('click', closeCustomSelect);
-    setSelectedOption('filter by region');
     setCountry(countries);
-
-    return () => {
-      document.removeEventListener('click', closeCustomSelect, false);
-    };
-  }, [countries, closeCustomSelect, selectedOption]);
+  }, [countries]);
 
   return (
     <HomePageBody>
@@ -92,24 +56,7 @@ const HomePage: FC = () => {
           <SearchInput type="search" placeholder="search for a country..." />
           <SearchIcon />
         </FormInputContainer>
-        <CustomSelectContainer>
-          <CustomSelect ref={ref} onClick={toggling}>
-            {selectedOption}
-            <ChevronDown />
-          </CustomSelect>
-          {isOpen && (
-            <CustomSelectOptions>
-              {options.map((option) => (
-                <CustomSelectOption
-                  key={uuid()}
-                  onClick={() => onOptionClicked(option)}
-                >
-                  {option}
-                </CustomSelectOption>
-              ))}
-            </CustomSelectOptions>
-          )}
-        </CustomSelectContainer>
+        <Select options={options} handleChange={handleChange} />
       </SearchInputAndFilterContainer>
       <CardList>
         {!isLoading && !isError ? (
