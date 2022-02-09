@@ -5,7 +5,7 @@ export const CountryCardList = styled.section`
   align-items: center;
   justify-content: center;
 
-  grid-template-columns: repeat(auto-fit, min(25rem, 100%));
+  grid-template-columns: repeat(auto-fit, min(30rem, 100%));
   grid-column-gap: 5rem;
   grid-row-gap: 5rem;
   margin-top: 5rem;

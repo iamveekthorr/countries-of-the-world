@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState, useRef } from 'react';
 import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 
@@ -28,35 +28,62 @@ const HomePage: FC = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const options: string[] = ['africa', 'america', 'oceania', 'europe', 'asia'];
+  const options: string[] = [
+    'filter by region',
+    'africa',
+    'america',
+    'oceania',
+    'europe',
+    'asia',
+  ];
 
   const { countries, isLoading, isError } = useCountries(
     'https://restcountries.com/v3.1/all'
   );
 
-  const [data, setData] = useState<typeof countries>();
+  const [country, setCountry] = useState<typeof countries>();
 
   const toggling = (): void => setIsOpen((prev) => !prev);
 
+  const ref = useRef<HTMLDivElement>(null);
+
+  const closeCustomSelect = useCallback(
+    (event: Event): void => {
+      if (
+        ref.current &&
+        !ref.current.contains(event.target as Element) &&
+        isOpen
+      ) {
+        setIsOpen(false);
+      }
+    },
+    [isOpen]
+  );
+
   const handleChange = async (value: string) => {
     if (value !== 'filter by region') {
-      const response = await axios
-        .get<typeof countries>(`https://restcountries.com/v3.1/region/${value}`)
-        .then((res) => res.data);
-      setData(response);
+      const { data } = await axios.get<typeof countries>(
+        `https://restcountries.com/v3.1/region/${value}`
+      );
+      setCountry(data);
     }
   };
 
-  const onOptionClicked = (value: string) => () => {
+  const onOptionClicked = (value: string): void => {
     setIsOpen((prev) => !prev);
     handleChange(value);
     setSelectedOption(value);
   };
 
   useEffect(() => {
+    document.addEventListener('click', closeCustomSelect);
     setSelectedOption('filter by region');
-    setData(countries);
-  }, [countries]);
+    setCountry(countries);
+
+    return () => {
+      document.removeEventListener('click', closeCustomSelect, false);
+    };
+  }, [countries, closeCustomSelect, selectedOption]);
 
   return (
     <HomePageBody>
@@ -66,7 +93,7 @@ const HomePage: FC = () => {
           <SearchIcon />
         </FormInputContainer>
         <CustomSelectContainer>
-          <CustomSelect onClick={toggling}>
+          <CustomSelect ref={ref} onClick={toggling}>
             {selectedOption}
             <ChevronDown />
           </CustomSelect>
@@ -75,7 +102,7 @@ const HomePage: FC = () => {
               {options.map((option) => (
                 <CustomSelectOption
                   key={uuid()}
-                  onClick={onOptionClicked(option)}
+                  onClick={() => onOptionClicked(option)}
                 >
                   {option}
                 </CustomSelectOption>
@@ -86,14 +113,14 @@ const HomePage: FC = () => {
       </SearchInputAndFilterContainer>
       <CardList>
         {!isLoading && !isError ? (
-          data?.map((country) => (
+          country?.map((res) => (
             <Card
               key={uuid()}
-              countryName={country.name.common}
-              capital={country.capital}
-              image={country.flags.svg}
-              population={country.population}
-              region={country.region}
+              countryName={res.name.common}
+              capital={res.capital}
+              image={res.flags.svg}
+              population={res.population}
+              region={res.region}
             />
           ))
         ) : (

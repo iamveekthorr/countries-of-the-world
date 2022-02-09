@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ReactComponent as MoonIcon } from '../../assets/moon.svg';
 import { ReactComponent as SunIcon } from '../../assets/sun.svg';
 
-export const HeaderContainer = styled.div`
+export const HeaderContainer = styled.nav`
   display: flex;
   align-items: center;
   justify-content: space-between;
