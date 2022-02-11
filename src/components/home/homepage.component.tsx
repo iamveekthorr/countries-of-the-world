@@ -41,7 +41,6 @@ const HomePage: FC = () => {
       const { data } = await axios.get<typeof countries>(
         `https://restcountries.com/v3.1/region/${value}`
       );
-      console.log('rerender from options');
       return setApiData(data);
     }
     return setApiData(countries);
@@ -54,7 +53,6 @@ const HomePage: FC = () => {
           // eslint-disable-next-line implicit-arrow-linebreak
           nation.name.common.toLowerCase() === e.target.value.toLowerCase()
       );
-      console.log('rerender from search');
       setApiData(searchResult);
       return;
     }
