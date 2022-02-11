@@ -1,4 +1,4 @@
-import { ReactElement, useState, useCallback } from 'react';
+import { ReactElement, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import { Routes, Route } from 'react-router-dom';
@@ -32,9 +32,9 @@ function App(): ReactElement {
     background: colors.darkModeText,
   };
 
-  const toggleTheme = useCallback(() => {
+  const toggleTheme = () => {
     theme === 'dark' ? setTheme('light') : setTheme('dark');
-  }, [theme]);
+  };
 
   return (
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
