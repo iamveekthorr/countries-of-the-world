@@ -38,31 +38,3 @@ export const FormInputContainer = styled.div`
     width: 2rem;
   }
 `;
-
-export const SearchInput = styled.input`
-  padding: 2rem 1.5rem 2rem 6rem;
-  font-size: 1.2rem;
-  text-transform: capitalize;
-  font-family: inherit;
-  font-weight: inherit;
-  background-color: ${(props) => props.theme.background};
-  outline: none;
-  border: none;
-  border-radius: 5px;
-  color: ${(props) => props.theme.text};
-  width: inherit;
-
-  &:focus {
-    outline: none;
-  }
-
-  &::placeholder {
-    color: ${(props) => props.theme.text};
-  }
-
-  &::-webkit-search-cancel-button {
-    -webkit-appearance: none;
-    height: 0;
-    width: 0;
-  }
-`;

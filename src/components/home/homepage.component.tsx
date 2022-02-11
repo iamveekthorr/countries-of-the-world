@@ -1,16 +1,16 @@
-import { FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 
 import Card from '../card/card.component';
 import CardList from '../card-list/card-list.component';
 import Select from '../custom-select-options/custom-select.component';
+import Search from '../search-input/search.component';
 
 import Spinner from '../spinner/spinner.styles';
 
 import {
   HomePageBody,
-  SearchInput,
   SearchInputAndFilterContainer,
   FormInputContainer,
 } from './homepage.styles';
@@ -33,34 +33,52 @@ const HomePage: FC = () => {
     'https://restcountries.com/v3.1/all'
   );
 
-  const [country, setCountry] = useState<typeof countries>();
+  const [apiData, setApiData] = useState<typeof countries>();
+  const [query, setQuery] = useState<string>('search for a country...');
 
-  const handleChange = async (value: string) => {
+  const handleChange = async (value: string): Promise<void> => {
     if (value !== 'filter by region') {
       const { data } = await axios.get<typeof countries>(
         `https://restcountries.com/v3.1/region/${value}`
       );
-      return setCountry(data);
+      console.log('rerender from options');
+      return setApiData(data);
     }
-    return setCountry(countries);
+    return setApiData(countries);
+  };
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length) {
+      const searchResult = countries?.filter(
+        (nation) =>
+          // eslint-disable-next-line implicit-arrow-linebreak
+          nation.name.common.toLowerCase() === e.target.value.toLowerCase()
+      );
+      console.log('rerender from search');
+      setApiData(searchResult);
+      return;
+    }
+    setQuery(query);
+    setApiData(countries);
   };
 
   useEffect(() => {
-    setCountry(countries);
+    if (!countries) return;
+    setApiData(countries);
   }, [countries]);
 
   return (
     <HomePageBody>
       <SearchInputAndFilterContainer>
         <FormInputContainer>
-          <SearchInput type="search" placeholder="search for a country..." />
+          <Search handleSearchChange={handleSearch} placeholder={query} />
           <SearchIcon />
         </FormInputContainer>
         <Select options={options} handleChange={handleChange} />
       </SearchInputAndFilterContainer>
       <CardList>
         {!isLoading && !isError ? (
-          country?.map((res) => (
+          apiData?.map((res) => (
             <Card
               key={uuid()}
               countryName={res.name.common}

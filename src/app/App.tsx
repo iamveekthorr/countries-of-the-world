@@ -1,7 +1,7 @@
 import { ReactElement, useState, useCallback } from 'react';
 import { ThemeProvider } from 'styled-components';
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import type { IDarkTheme, ILightTheme } from '../themes/theme';
 
@@ -41,12 +41,9 @@ function App(): ReactElement {
       <>
         <GlobalStyles />
         <Header toggleTheme={toggleTheme} theme={theme} />
-
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-          </Routes>
-        </BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+        </Routes>
       </>
     </ThemeProvider>
   );
