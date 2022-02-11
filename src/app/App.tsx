@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import { Routes, Route } from 'react-router-dom';
@@ -35,6 +35,8 @@ function App(): ReactElement {
   const toggleTheme = () => {
     theme === 'dark' ? setTheme('light') : setTheme('dark');
   };
+
+  useEffect(() => setTheme(theme), [theme]);
 
   return (
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
