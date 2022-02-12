@@ -1,4 +1,3 @@
-/* eslint-disable implicit-arrow-linebreak */
 import useSWR from 'swr';
 import axios from 'axios';
 
@@ -10,10 +9,12 @@ const fetcher = async (url: string): Promise<CountryResponse[]> => {
 };
 
 export const useCountries = (url: string) => {
-  const { data, error } = useSWR(url, fetcher);
+  const { data, error, mutate } = useSWR(url, fetcher);
+
   return {
     countries: data,
     isLoading: !error && !data,
     isError: error,
+    mutate,
   };
 };

@@ -53,12 +53,12 @@ const Select: FC<ISelectProps> = ({ options, handleChange }) => {
 
   return (
     <CustomSelectContainer>
-      <CustomSelect ref={ref} onClick={toggling}>
+      <CustomSelect ref={ref} onClick={toggling} role="group">
         {selectedOption || 'filter by country'}
         <ChevronDown />
       </CustomSelect>
       {isOpen && (
-        <CustomSelectOptions>
+        <CustomSelectOptions role="option">
           {options.map((option) => (
             <CustomSelectOption
               key={uuid()}

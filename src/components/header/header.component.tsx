@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useDarkMode } from '../../hooks/useTheme';
 
 import {
   HeaderContainer,
@@ -10,22 +11,18 @@ import {
 
 interface IHeaderProps {
   toggleTheme: () => void;
-  theme: string;
 }
-const Header: FC<IHeaderProps> = ({ toggleTheme, theme }) => (
-  <HeaderContainer>
-    <HeaderCaption>Where in the world ?</HeaderCaption>
-    <SwitcherContainer
-      onClick={toggleTheme}
-      role="button"
-      tabIndex={0}
-      onKeyPress={(e) => {
-        if (e.key === 'enter') toggleTheme();
-      }}
-    >
-      {theme === 'dark' ? <Sun /> : <Moon />}
-    </SwitcherContainer>
-  </HeaderContainer>
-);
+
+const Header: FC<IHeaderProps> = ({ toggleTheme }) => {
+  const { theme } = useDarkMode();
+  return (
+    <HeaderContainer>
+      <HeaderCaption>Where in the world ?</HeaderCaption>
+      <SwitcherContainer onClick={toggleTheme} role="button" tabIndex={0}>
+        {theme === 'dark' ? <Sun /> : <Moon />}
+      </SwitcherContainer>
+    </HeaderContainer>
+  );
+};
 
 export default Header;

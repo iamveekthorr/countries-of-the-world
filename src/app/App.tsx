@@ -1,7 +1,8 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
-import { Routes, Route } from 'react-router-dom';
+import { useDarkMode } from '../hooks/useTheme';
 
 import type { IDarkTheme, ILightTheme } from '../themes/theme';
 
@@ -14,38 +15,33 @@ import Header from '../components/header/header.component';
 import HomePage from '../components/home/homepage.component';
 
 import './App.css';
+import Spinner from '../components/spinner/spinner.styles';
+
+const darkTheme: IDarkTheme = {
+  body: colors.darkModeBG,
+  text: colors.darkModeText,
+  background: colors.darkModeElements,
+};
+
+const lightTheme: ILightTheme = {
+  body: colors.lightModeBG,
+  text: colors.lightModeText,
+  background: colors.darkModeText,
+};
 
 function App(): ReactElement {
-  const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const { theme, toggleTheme, isMounted } = useDarkMode();
+  const mode = theme === 'light' ? lightTheme : darkTheme;
 
-  const [theme, setTheme] = useState(defaultDark ? 'dark' : 'light');
-
-  const darkTheme: IDarkTheme = {
-    body: colors.darkModeBG,
-    text: colors.darkModeText,
-    background: colors.darkModeElements,
-  };
-
-  const lightTheme: ILightTheme = {
-    body: colors.lightModeBG,
-    text: colors.lightModeText,
-    background: colors.darkModeText,
-  };
-
-  const toggleTheme = () => {
-    theme === 'dark' ? setTheme('light') : setTheme('dark');
-  };
-
-  useEffect(() => setTheme(theme), [theme]);
-
+  if (!isMounted) return <Spinner />;
   return (
-    <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+    <ThemeProvider theme={mode}>
       <>
-        <GlobalStyles />
-        <Header toggleTheme={toggleTheme} theme={theme} />
+        <Header toggleTheme={toggleTheme} />
         <Routes>
           <Route path="/" element={<HomePage />} />
         </Routes>
+        <GlobalStyles />
       </>
     </ThemeProvider>
   );

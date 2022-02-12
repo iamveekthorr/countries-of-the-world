@@ -18,6 +18,7 @@ import {
 import { ReactComponent as SearchIcon } from '../../assets/search.svg';
 
 import { useCountries } from '../../hooks/useFetcher';
+import CountryResponse from '../../types/country.type';
 
 const HomePage: FC = () => {
   const options: string[] = [
@@ -29,16 +30,16 @@ const HomePage: FC = () => {
     'asia',
   ];
 
+  const [apiData, setApiData] = useState<CountryResponse[]>();
+  const [query, setQuery] = useState<string>('search for a country...');
+
   const { countries, isLoading, isError } = useCountries(
     'https://restcountries.com/v3.1/all'
   );
 
-  const [apiData, setApiData] = useState<typeof countries>();
-  const [query, setQuery] = useState<string>('search for a country...');
-
   const handleChange = async (value: string): Promise<void> => {
     if (value !== 'filter by region') {
-      const { data } = await axios.get<typeof countries>(
+      const { data } = await axios.get<CountryResponse[]>(
         `https://restcountries.com/v3.1/region/${value}`
       );
       return setApiData(data);
@@ -50,10 +51,10 @@ const HomePage: FC = () => {
     if (e.target.value.length) {
       const searchResult = countries?.filter(
         (nation) =>
-          // eslint-disable-next-line implicit-arrow-linebreak
           nation.name.common.toLowerCase() === e.target.value.toLowerCase()
       );
       setApiData(searchResult);
+      setQuery(query);
       return;
     }
     setQuery(query);
@@ -61,9 +62,10 @@ const HomePage: FC = () => {
   };
 
   useEffect(() => {
-    if (!countries) return;
     setApiData(countries);
   }, [countries]);
+
+  if (isError) return <div>something went wrong {isError?.message}</div>;
 
   return (
     <HomePageBody>
@@ -75,7 +77,7 @@ const HomePage: FC = () => {
         <Select options={options} handleChange={handleChange} />
       </SearchInputAndFilterContainer>
       <CardList>
-        {!isLoading && !isError ? (
+        {!isLoading ? (
           apiData?.map((res) => (
             <Card
               key={uuid()}
