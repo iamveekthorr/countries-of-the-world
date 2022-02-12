@@ -1,6 +1,5 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import Card from '../../components/card/card.component';
