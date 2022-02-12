@@ -1,13 +1,14 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-import Card from '../card/card.component';
-import CardList from '../card-list/card-list.component';
-import Select from '../custom-select-options/custom-select.component';
-import Search from '../search-input/search.component';
+import Card from '../../components/card/card.component';
+import CardList from '../../components/card-list/card-list.component';
+import Select from '../../components/custom-select-options/custom-select.component';
+import Search from '../../components/search-input/search.component';
 
-import Spinner from '../spinner/spinner.styles';
+import Spinner from '../../components/spinner/spinner.styles';
 
 import {
   HomePageBody,
@@ -16,15 +17,19 @@ import {
 } from './homepage.styles';
 
 import { ReactComponent as SearchIcon } from '../../assets/search.svg';
-
-import { useCountries } from '../../hooks/useFetcher';
 import CountryResponse from '../../types/country.type';
 
-const HomePage: FC = () => {
+interface IHomepageProps {
+  countries: CountryResponse[] | undefined;
+  isLoading: boolean;
+  isError: any;
+}
+
+const HomePage: FC<IHomepageProps> = ({ countries, isLoading, isError }) => {
   const options: string[] = [
     'filter by region',
     'africa',
-    'america',
+    'americas',
     'oceania',
     'europe',
     'asia',
@@ -32,15 +37,14 @@ const HomePage: FC = () => {
 
   const [apiData, setApiData] = useState<CountryResponse[]>();
   const [query, setQuery] = useState<string>('search for a country...');
+  const navigate = useNavigate();
 
-  const { countries, isLoading, isError } = useCountries(
-    'https://restcountries.com/v3.1/all'
-  );
+  const [loading, setLoading] = useState<boolean>(isLoading);
 
   const handleChange = async (value: string): Promise<void> => {
     if (value !== 'filter by region') {
-      const { data } = await axios.get<CountryResponse[]>(
-        `https://restcountries.com/v3.1/region/${value}`
+      const data = countries?.filter(
+        (d) => d.region.toLowerCase() === value.toLowerCase()
       );
       return setApiData(data);
     }
@@ -62,11 +66,13 @@ const HomePage: FC = () => {
   };
 
   useEffect(() => {
-    setApiData(countries);
-  }, [countries]);
+    if (!isLoading) {
+      setApiData(countries);
+      setLoading(isLoading);
+    }
+  }, [countries, isLoading, loading]);
 
   if (isError) return <div>something went wrong {isError?.message}</div>;
-
   return (
     <HomePageBody>
       <SearchInputAndFilterContainer>
@@ -77,7 +83,7 @@ const HomePage: FC = () => {
         <Select options={options} handleChange={handleChange} />
       </SearchInputAndFilterContainer>
       <CardList>
-        {!isLoading ? (
+        {!loading ? (
           apiData?.map((res) => (
             <Card
               key={uuid()}
@@ -86,6 +92,7 @@ const HomePage: FC = () => {
               image={res.flags.svg}
               population={res.population}
               region={res.region}
+              handleOnClick={() => navigate(`/country/${res.name.common}`)}
             />
           ))
         ) : (

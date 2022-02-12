@@ -20,6 +20,7 @@
   "plugins": ["react", "react-hooks", "@typescript-eslint"],
   "rules": {
     "operator-linebreak": "off",
+    "react/jsx-wrap-multilines": "off",
     "implicit-arrow-linebreak": "off",
     "object-curly-newline": "off",
     "@typescript-eslint/no-explicit-any": "off",

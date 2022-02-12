@@ -10,6 +10,7 @@ const Spinner = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 20rem 0;
 
   &::after {
     content: '';

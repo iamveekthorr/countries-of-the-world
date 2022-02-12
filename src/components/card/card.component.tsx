@@ -16,6 +16,7 @@ interface ICardProps {
   population: number;
   region: string;
   capital: string;
+  handleOnClick: () => void;
 }
 
 const Card: FC<ICardProps> = ({
@@ -24,8 +25,9 @@ const Card: FC<ICardProps> = ({
   population,
   region,
   capital,
+  handleOnClick,
 }) => (
-  <CardContainer>
+  <CardContainer onClick={handleOnClick}>
     <CardImageContainer>
       <CardImage src={image} alt={countryName} />
     </CardImageContainer>

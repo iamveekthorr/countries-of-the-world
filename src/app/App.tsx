@@ -1,21 +1,23 @@
-import { ReactElement } from 'react';
+import { lazy, ReactElement, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
-import { useDarkMode } from '../hooks/useTheme';
+import './App.css';
 
 import type { IDarkTheme, ILightTheme } from '../themes/theme';
+
+import { useDarkMode } from '../hooks/useTheme';
+import { useCountries } from '../hooks/useFetcher';
 
 import { GlobalStyles } from '../components/globalStyles';
 
 import { colors } from '../lib/colors';
 
 import Header from '../components/header/header.component';
-
-import HomePage from '../components/home/homepage.component';
-
-import './App.css';
 import Spinner from '../components/spinner/spinner.styles';
+
+const CountryPage = lazy(() => import('../pages/country/country.page'));
+const HomePage = lazy(() => import('../pages/home/homepage.page'));
 
 const darkTheme: IDarkTheme = {
   body: colors.darkModeBG,
@@ -33,13 +35,37 @@ function App(): ReactElement {
   const { theme, toggleTheme, isMounted } = useDarkMode();
   const mode = theme === 'light' ? lightTheme : darkTheme;
 
-  if (!isMounted) return <Spinner />;
+  const { countries, isLoading, isError } = useCountries(
+    'https://restcountries.com/v3.1/all'
+  );
+
+  if (!isMounted) return <div>loading...</div>;
   return (
     <ThemeProvider theme={mode}>
       <>
         <Header toggleTheme={toggleTheme} />
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <HomePage
+                  countries={countries}
+                  isError={isError}
+                  isLoading={isLoading}
+                />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path="/country/:name"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <CountryPage />
+              </Suspense>
+            }
+          />
         </Routes>
         <GlobalStyles />
       </>
