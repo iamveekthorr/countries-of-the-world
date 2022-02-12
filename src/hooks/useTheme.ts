@@ -11,7 +11,7 @@ export const useDarkMode = () => {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
 
-  const setMode = async (mode: string): Promise<void> => {
+  const setMode = (mode: string): void => {
     window.localStorage.setItem('theme', mode);
     setTheme(mode);
   };

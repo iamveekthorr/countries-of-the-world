@@ -36,11 +36,11 @@ const HomePage: FC<IHomepageProps> = ({ countries, isLoading, isError }) => {
 
   const [apiData, setApiData] = useState<CountryResponse[]>();
   const [query, setQuery] = useState<string>('search for a country...');
-  const navigate = useNavigate();
-
   const [loading, setLoading] = useState<boolean>(isLoading);
 
-  const handleChange = async (value: string): Promise<void> => {
+  const navigate = useNavigate();
+
+  const handleChange = (value: string): void => {
     if (value !== 'filter by region') {
       const data = countries?.filter(
         (d) => d.region.toLowerCase() === value.toLowerCase()

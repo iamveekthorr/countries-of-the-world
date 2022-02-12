@@ -21,7 +21,6 @@ export const CustomSelect = styled.div`
   width: 100%;
   border-radius: 5px;
   cursor: pointer;
-  color: ${(props) => props.theme.text};
   font-size: inherit;
 
   & > svg {

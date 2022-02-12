@@ -27,7 +27,6 @@ export const CardDetailsContainer = styled.div`
 export const CountryName = styled.p`
   font-weight: 800;
   font-size: 1.8rem;
-  color: ${(props) => props.theme.text};
   margin-bottom: 1rem;
 `;
 

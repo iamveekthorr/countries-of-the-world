@@ -11,8 +11,8 @@ type CountryResponse = {
   population: number;
   borders: string[];
   flags: Record<string, any>;
-  currencies: [Record<string, any>];
-  languages: [Record<string, any>];
+  currencies: Record<string, any>;
+  languages: Record<string, any>;
   flag: Record<string, any>;
 };
 
