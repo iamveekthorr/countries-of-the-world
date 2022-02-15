@@ -19,6 +19,7 @@
   },
   "plugins": ["react", "react-hooks", "@typescript-eslint"],
   "rules": {
+    "function-paren-newline": "off",
     "operator-linebreak": "off",
     "react/jsx-wrap-multilines": "off",
     "implicit-arrow-linebreak": "off",

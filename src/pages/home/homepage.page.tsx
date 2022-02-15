@@ -52,9 +52,8 @@ const HomePage: FC<IHomepageProps> = ({ countries, isLoading, isError }) => {
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length) {
-      const searchResult = countries?.filter(
-        (nation) =>
-          nation.name.common.toLowerCase() === e.target.value.toLowerCase()
+      const searchResult = countries?.filter((nation) =>
+        nation.name.common.toLowerCase().includes(e.target.value)
       );
       setApiData(searchResult);
       setQuery(query);
